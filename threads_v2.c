@@ -3,7 +3,9 @@
 #include <sys/socket.h>
 #include <arpa/inet.h>
 #include <stdlib.h>
+#include <unistd.h>
 #include <pthread.h>
+#include <ctype.h>
 #define NTHREADS 254 //LA cantida de hilos que se crea corresponde  a la cantidad de ip
 
 int hostID = 1;      //Variable global protegida con los mutex
@@ -61,11 +63,12 @@ void *conexion(void *data)
     if (connect(Descriptor, (struct sockaddr *)&servidor, sizeof(servidor)) < 0)
     {
         printf("\x1b[0mNo se encontro un servidor web en la IP: %s\n", base);
+        close(Descriptor);
     }
     else
     {
         printf("\x1b[33mSe encontro un servidor web en la IP: %s\n", base);
-        close();
+        close(Descriptor);
     }
 }
 
