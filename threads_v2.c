@@ -4,10 +4,11 @@
 #include <arpa/inet.h>
 #include <stdlib.h>
 #include <pthread.h>
-#define NTHREADS 255 //LA cantida de hilos que se crea corresponde  a la cantidad de ip
-int hostID = 1;      //Variable global protegida con los mutex
+#define NTHREADS 254 //LA cantida de hilos que se crea corresponde  a la cantidad de ip
 
+int hostID = 1;      //Variable global protegida con los mutex
 pthread_mutex_t lock;
+
 char enteroACaracter(int numero);
 void *conexion(void *data);
 int IpCorrecta(char *ip);
@@ -59,11 +60,11 @@ void *conexion(void *data)
 
     if (connect(Descriptor, (struct sockaddr *)&servidor, sizeof(servidor)) < 0)
     {
-        printf("No se encontro un servidor web en la IP: %s\n", base);
+        printf("\x1b[0mNo se encontro un servidor web en la IP: %s\n", base);
     }
     else
     {
-        printf("Se encontro un servidor web en la IP: %s\n", base);
+        printf("\x1b[33mSe encontro un servidor web en la IP: %s\n", base);
         close();
     }
 }
@@ -78,8 +79,8 @@ int main()
         return 1;
     }
     //
-    printf("\n#####Bienvenido a PCFE_ServerDetector#####\n");
-    printf("\n#####INICIANDO EJECUCION#####\n");
+    printf("\n\x1b[32m#####Bienvenido a PCFE_ServerDetector#####\n");
+    printf("\n\x1b[32m#####INICIANDO EJECUCION#####\n");
     do
     {
         printf("Si la direccion ingresada es incorrecta se pedira que lo vuelva a intentar\n");
@@ -90,8 +91,8 @@ int main()
     corregirIP(direccion);
     //Correccion IP
 
-    printf("Dirección de Red %s0\n", direccion);
-    printf("Buscando servidores...\n");
+    printf("\x1b[32mDirección de Red %s0\n", direccion);
+    printf("\x1b[32mBuscando servidores...\n");
 
     /* ==================== DEMO 3 ==================== */
 
@@ -102,14 +103,14 @@ int main()
         pthread_create(&threads[i], NULL, conexion, (void *)direccion);
     }
 
-    /* Wait for all threads to complete then print global sum */
+    /* Esperar threads*/
     for (int i = 0; i < NTHREADS; i++)
     {
         pthread_join(threads[i], NULL);
     }
 
     pthread_mutex_destroy(&lock);
-    printf("\n#####FIN DE EJECUCION#####\n");
+    printf("\n\x1b[32m#####FIN DE EJECUCION#####\n");
     return 0;
 }
 
